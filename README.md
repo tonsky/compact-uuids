@@ -67,16 +67,16 @@ Compact-UUIDs encoding uses 6-bit similar to [base64url without padding](https:
 | values | chars |
 | ------ | ----- |
 | 0-9    | `0-9` |
-| 10     | `=`   |
-| 11-36  | `A-Z` |
-| 37     | `_`   |
-| 38-63  | `a-z` |
+| 10-35  | `A-Z` |
+| 36     | `_`   |
+| 37-62  | `a-z` |
+| 63     | `~`   |
 
 One important property of this alphabet is that it retains sort order. I.e. if `1` < `2` < `3` then `(uuid/str 1)` < `(uuid/str 2)` < `(uuid/str 3)` (lexicographically) for any 1, 2 and 3.
 
-It’s also URL-safe, filename-safe, zero maps to ASCII 0 and small numbers (0-9) map to expected ASCII `0-9` chars, making reading encoded small numbers easier.
+It’s also URL-safe, filename-safe, zero maps to ASCII 0 and small numbers (0-15) map to expected ASCII `0-9,A-F` chars, making reading encoded small numbers easier.
 
-N.B. Because 22 6-bit chars give you 132 bits and UUIDs are just 128 bit we limit chars at positions 0 and 11 to 4 bits (`0123456789=ABCDE`)
+N.B. Because 22 6-bit chars give you 132 bits and UUIDs are just 128 bit we limit chars at positions 0 and 11 to 4 bits (`0123456789ABCDEF`)
 
 ## Developing
 

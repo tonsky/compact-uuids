@@ -3,7 +3,7 @@
   (:refer-clojure :exclude [str read]))
 
 
-(def ^:const ^:private alphabet "0123456789=ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz")
+(def ^:const ^:private alphabet "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~")
 
 
 (def ^:const ^:private hex "0123456789abcdef")
@@ -12,10 +12,10 @@
 (defn- parse-char [c]
   (cond
     (<= 48 c 57)  (- c 48)   ;; 0..9
-    (== c 61)     10         ;; =
-    (<= 65 c 90)  (- c 54)   ;; A-Z
-    (== c 95)     37         ;; _
-    (<= 97 c 122) (- c 59))) ;; a-z
+    (<= 65 c 90)  (- c 55)   ;; A-Z
+    (== c 95)     36         ;; _
+    (<= 97 c 122) (- c 60)   ;; a-z
+    (== c 126)    63))       ;; ~
 
 
 (defn- parse-hex [c]
