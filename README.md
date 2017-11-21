@@ -1,12 +1,14 @@
-# Compact 22-char URL-safe representation of UUIDs
+# Compact 26-char URL-safe representation of UUIDs
 
 ## Highlights
 
-- Produces strings that are 40% smaller (22 chars vs traditional 36 chars)
+- Produces strings that are 30% smaller (26 chars vs traditional 36 chars)
 - Supports full UUID range (128 bits)
 - Encoding-safe (uses only readable characters from ASCII)
 - URL/file-name safe
-- Alphabetical sort on 22-char strings matches default UUID sort order
+- Lowercase/uppercase safe
+- Avoids ambiguous characters (i/I/l/L/1/O/o/0)
+- Alphabetical sort on encoded 26-char strings matches default UUID sort order
 - Both Clojure and ClojureScript are supported
 
 ## Usage
@@ -14,7 +16,7 @@
 Include:
 
 ```clojure
-[compact-uuids "0.1.0"]
+[compact-uuids "0.2.0"]
 ```
 
 Require:
@@ -27,9 +29,9 @@ Use:
 
 ```clojure
 (uuid/str #uuid "3867b6f3-dbb0-4ef5-8078-364897154fd9")
-           ; => "3XcikFRh4wq81tD_YN5K~P"
+           ; => "3gsxpyfdv0kqn80y1p92bhakys"
 
-(uuid/read "3XcikFRh4wq81tD_YN5K~P")
+(uuid/read "3gsxpyfdv0kqn80y1p92bhakys")
 ; => #uuid "3867b6f3-dbb0-4ef5-8078-364897154fd9"
 ```
 
@@ -51,35 +53,37 @@ If you produce an URL that has at least one UUID in it, it becomes unbearably lo
 https://domain.com/chat/3867b6f3-dbb0-4ef5-8078-364897154fd9
 ```
 
-Compare it to much more compact variant:
+Compare it to more compact and easier-on-the-eyes variant:
 
 ```
-https://domain.com/chat/3XcikFRh4wq81tD_YN5K~P
+https://domain.com/chat/3gsxpyfdv0kqn80y1p92bhakys
 ```
 
 ### For performance
 
-If you’re serializing lots of UUIDs (to JSON, for example), or you store lots of UUIDs as strings in memory (since there’s no compact UUID type in JS) or in DB (bad practice, don’t do that), then Compact UUIDs will save you up to 40% for free by essentially doing exactly the same. Just more efficient. It means faster transfers, less memory consumption, and less disk usage.
+If you’re serializing lots of UUIDs (to JSON, for example), or you store lots of UUIDs as strings in memory (since there’s no compact UUID type in JS) or in DB (bad practice, don’t do that), then Compact UUIDs will save you up to 30% for free by essentially doing exactly the same. Just more efficient. It means faster transfers, less memory consumption, and less disk usage.
 
 It probably wouldn’t make all the difference in the world, but it never hurts being a little more performant.
 
 ## Encoding algorithm
 
-Compact-UUIDs encoding uses 6-bit similar to [base64url without padding](https://tools.ietf.org/html/rfc7515#appendix-C). This is the alphabet used for encoding:
+Compact-UUIDs encoding is based on [Crockford’s base32](http://www.crockford.com/wrmg/base32.html) encoding
+. This is the alphabet used:
 
 | values | chars |
 | ------ | ----- |
 | 0-9    | `0-9` |
-| 10-35  | `A-Z` |
-| 36     | `_`   |
-| 37-62  | `a-z` |
-| 63     | `~`   |
+| 10-17  | `a-h` |
+| 18-19  | `jk`  |
+| 20-21  | `mn`  |
+| 22-26  | `p-t` |
+| 27-31  | `v-z` |
 
 One important property of this alphabet is that it retains sort order. I.e. if `1` < `2` < `3` then `(uuid/str 1)` < `(uuid/str 2)` < `(uuid/str 3)` (lexicographically) for any 1, 2 and 3.
 
-It’s also URL-safe, filename-safe, zero maps to ASCII 0 and small numbers (0-15) map to expected ASCII `0-9,A-F` chars, making reading encoded small numbers easier.
+It’s also URL-safe, filename-safe, zero maps to ASCII 0 and small numbers (0-15) map to expected ASCII `0-9a-f` chars, making reading encoded small numbers easier.
 
-N.B. Because 22 6-bit chars give you 132 bits and UUIDs are just 128 bit we limit chars at positions 0 and 11 to 4 bits (`0123456789ABCDEF`)
+N.B. Because 26 5-bit chars give you 130 bits and UUIDs are just 128 bit we limit chars at positions 0 and 13 to 4 bits (`0123456789abcdef`)
 
 ## Developing
 
