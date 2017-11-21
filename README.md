@@ -26,8 +26,11 @@ Require:
 Use:
 
 ```clojure
-(uuid/str #uuid "8810ea6c-4abb-4bee-91e7-3fb668fa2808") ;; => "8VFual=ioji97bEvOcyXV8"
-(uuid/read "8VFual=ioji97bEvOcyXV8") ;; => #uuid "8810ea6c-4abb-4bee-91e7-3fb668fa2808"
+(uuid/str #uuid "3867b6f3-dbb0-4ef5-8078-364897154fd9")
+           ; => "3XcikFRh4wq81tD_YN5K~P"
+
+(uuid/read "3XcikFRh4wq81tD_YN5K~P")
+; => #uuid "3867b6f3-dbb0-4ef5-8078-364897154fd9"
 ```
 
 ## Why?
@@ -45,13 +48,13 @@ Does it matter? Well, not much, but it does a little.
 If you produce an URL that has at least one UUID in it, it becomes unbearably long:
 
 ```
-https://domain.com/chat/5926f904-48eb-425d-a3eb-6fb1193eb955
+https://domain.com/chat/3867b6f3-dbb0-4ef5-8078-364897154fd9
 ```
 
 Compare it to much more compact variant:
 
 ```
-https://domain.com/chat/5ZayFG8uo9S=EfQv4OEf_K
+https://domain.com/chat/3XcikFRh4wq81tD_YN5K~P
 ```
 
 ### For performance
