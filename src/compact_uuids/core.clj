@@ -1,6 +1,6 @@
 (ns compact-uuids.core
   "Compact 26-char URL-safe representation of UUIDs"
-  (:refer-clojure :exclude [str read])
+  (:refer-clojure :exclude [str read parse-long])
   (:import
     [java.util UUID]))
 
