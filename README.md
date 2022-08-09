@@ -16,7 +16,7 @@
 Include:
 
 ```clojure
-[compact-uuids "0.2.0"]
+[compact-uuids "0.2.1"]
 ```
 
 Require:

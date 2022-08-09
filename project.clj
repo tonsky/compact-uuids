@@ -1,4 +1,4 @@
-(defproject compact-uuids "0.2.0"
+(defproject compact-uuids "0.2.1"
   :description  "Compact 26-char URL-safe representation of UUIDs"
   :license      { :name "Eclipse"
                   :url  "http://www.eclipse.org/legal/epl-v10.html" }
