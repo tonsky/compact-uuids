@@ -22,7 +22,7 @@ Include:
 Require:
 
 ```clojure
-(require [compact-uuids.core :as uuid])
+(require '[compact-uuids.core :as uuid])
 ```
 
 Use:
